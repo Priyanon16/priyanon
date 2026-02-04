@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +28,7 @@ if(isset($_POST['Submit'])) {
     if($num == 1) {
         $data = mysqli_fetch_array($rs);
         $_SESSION['aid'] = $data['a_id'];
-        $_SESSION['name'] = $data['a_name'];
+        $_SESSION['aname'] = $data['a_name'];
         echo"<script>" ;
         echo "window.location='index2.php';";
         echo "</script>";
