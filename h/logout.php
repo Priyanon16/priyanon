@@ -5,6 +5,6 @@
     unset($_SESSION['aname']);
 
     echo"<script>";
-    echo"window.location='index.php';";
+    echo"window.location='index2.php';";
     echo"</script>";
 ?>
