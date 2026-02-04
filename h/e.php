@@ -10,14 +10,12 @@
     <title>ปรียานนท์ กรุตนิด(มินนี่)</title>
 </head>
 <body>
-<h1>a.php</h1>
+<h1>d.php</h1>
 
 <?php
-    $_SESSION['name'] = "ปรียานนท์ กรุตนิด";
-    $_SESSION['nickname'] = "มินนี่";
-    $_SESSION['p1'] = "โซฟา";
-    $_SESSION['p2'] = "ห่วงยาง";
+   unset($_SESSION['name']);
 ?>
+
 </body>
 </html>
 
