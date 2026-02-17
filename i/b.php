@@ -37,7 +37,7 @@ if(isset($_POST['Submit'])){
     $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}','{$ext}','{$rid}')";
     mysqli_query($conn, $sql2) or die ("เพิ่มข้อมูลไม่ได้");
     $pid = mysqli_insert_id($conn);
-    copy($FILES['pimage']['tmp_name'], "images/".$pid.".".);
+    copy($FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
 }
 ?>
 <table border="1">
