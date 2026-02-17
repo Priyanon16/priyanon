@@ -36,7 +36,8 @@ if(isset($_POST['Submit'])){
     $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}','{$ext}','{$rid}')";
     if(mysqli_query($conn, $sql2)){
         $pid = mysqli_insert_id($conn);
-        copy($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+        //copy($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+        move_uploaded_file($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
         echo "<script>window.location.href=window.location.href;</script>";
     } else {
         echo "เพิ่มข้อมูลไม่ได้: " . mysqli_error($conn);
