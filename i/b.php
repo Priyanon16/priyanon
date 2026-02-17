@@ -8,9 +8,23 @@
 <body>
 
 <h1>งาน i -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
-<form method="post" action="">
+<form method="post" action="" enctype="multipart/from-data">
     ชื่อจังหวัด <input type="text" name="pname" autofocus required>
-    รูป <input type="file" name="pimage">
+    รูปภาพ <input type="file" name="pimage" required> <br>
+
+    ภาค
+    <select name="rid">
+    <?php 
+include_once("connectdb.php");
+$sql3 = "SELECT * FROM `regions`";
+$rs3 = mysqli_query($conn, $sql3);
+while ($data = mysqli_fetch_array($rs3)){
+?>
+        <option value="xxx">xxx</option>
+<?php } ?>
+    </select>
+    <br>
+
     <button type="submit" name="Submit">บันทึก</button>
 </form> <br> <br>
 
