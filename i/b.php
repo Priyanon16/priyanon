@@ -2,12 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>ปรียานนท์ กรุตนิด (มินนี่)</title>
+<title>Untitled Document</title>
 </head>
-
 <body>
 
-<h1>จัดการข้อมูลจังหวัด -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
+<h1>66010914015 ภาคภูมิ วรรณชัย (แมนนนน)</h1>
 
 <form method="post" action="" enctype="multipart/form-data">
     ชื่อจังหวัด<input type="text" name="pname" autofocus require><br>
