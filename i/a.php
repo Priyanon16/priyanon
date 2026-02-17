@@ -8,30 +8,41 @@
 <body>
 
 <h1>งาน i -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
+<form method="post" action="">
+    ชื่อภาค <input type="text" name="rname" autofocus required>
+    <button type="submit" name="Submit">บันทึก</button>
+</form> <br> <br>
 
 <?php
-include_once("connectdb.php");
-$sql = SELECT * FROM `regions`
-$rs = mysqli_query($conn, $sql);
-while ($data = mysqli_fetch_array($rs)){
-    echo $data['r_id']. "<br>";
-    echo $data['r_name']. "<hr>";
+if(isset($_POST['Submit'])){
+    include_once("connectdb.php");
+    $rname = $_POST['rname'];
+    $sql2 = "INSERT INTO `regions` (`r_id`, `r_name`) VALUES (NULL, '{$rname}')";
+    mysqli_query($conn, $sql2) or die ("เพิ่มข้อมูลไม่ได้");
 }
-
-mysqli_close($conn);
 ?>
-
 <table border="1">
     <tr>
-        <hr>รหัสภาค</hr>
-        <hr>ชื่อภาค</hr>
+        <th>รหัสภาค</th>
+        <th>ชื่อภาค</th>
+        <th>ลบ</th>
     </tr>
-
+<?php 
+include_once("connectdb.php");
+$sql = "SELECT * FROM `regions`";
+$rs = mysqli_query($conn, $sql);
+while ($data = mysqli_fetch_array($rs)){
+?>
     <tr>
-        <hr>xxx</hr>
-        <hr>xxx</hr>
+        <td><?php echo $data['r_id'];?></td>
+        <td><?php echo $data['r_name'];?></td>
+        <td width="80" align="center"><img src="images/delete.jpg" width="20"></td>
     </tr>
-
+<?php } ?>
 </table>
 </body>
 </html>
+
+<?php
+mysqli_close($conn)
+?>
