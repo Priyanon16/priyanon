@@ -10,86 +10,78 @@
 <h1>จัดการข้อมูลจังหวัด -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
 
 <form method="post" action="" enctype="multipart/form-data">
-    ชื่อจังหวัด: <input type="text" name="pname" autofocus required>
-    รูปภาพ: <input type="file" name="pimage" required> <br>
-    ภาค: 
-    <select name="rid" required>
-        <option value="">-- เลือกภาค --</option>
-        <?php 
-        include_once("connectdb.php");
-        $sql3 = "SELECT * FROM `regions`";
-        $rs3 = mysqli_query($conn, $sql3);
-        while ($data3 = mysqli_fetch_array($rs3)){
-            // แก้ไขตรงนี้: ใช้ echo และลบเครื่องหมายส่วนเกินออก
-            echo "<option value='".$data3['r_id']."'>".$data3['r_name']."</option>";
-        } 
-        ?>
-    </select>
+    ชื่อจังหวัด<input type="text" name="pname" autofocus require><br>
+    รูปประจำจังหวัด<input type="file" name="pimage" require><br>
+    ภาค
+    <select name="rid">
+    <?php
+include_once("conectdb.php");
+$sql3 = "SELECT * FROM regions";
+$rs3 = mysqli_query($conn,$sql3);
+while ($data3 = mysqli_fetch_array($rs3)){
+
+?>
+        <option value="<?php echo $data3['r_id']; ?>"><?php echo $data3['r_name']; ?></option>
+<?php } ?>
+</SELECT>
+<br>
     <button type="submit" name="Submit">บันทึก</button>
-</form> <br>
+
+</form><br><br>
 
 <?php
 if(isset($_POST['Submit'])){
-    include_once("connectdb.php");
+    include_once("conectdb.php");
+    
+
     $pname = $_POST['pname'];
+    $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
     $rid = $_POST['rid'];
-    
-    // ตรวจสอบนามสกุลไฟล์
-    $filename = $_FILES['pimage']['name'];
-    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-    
-    // บันทึกลงฐานข้อมูล (ระบุชื่อคอลัมน์เพื่อความชัวร์)
-    $sql2 = "INSERT INTO `provinces` (`p_name`, `p_ext`, `r_id`) VALUES ('$pname', '$ext', '$rid')";
-    
-    if(mysqli_query($conn, $sql2)){
-        $pid = mysqli_insert_id($conn); // ได้ ID ล่าสุดมาทำชื่อไฟล์
-        $target_file = "images/" . $pid . "." . $ext;
-        
-        // ย้ายไฟล์จาก Temp ไปยังโฟลเดอร์ images
-        if(move_uploaded_file($_FILES['pimage']['tmp_name'], $target_file)){
-            echo "<script>alert('บันทึกข้อมูลและอัปโหลดรูปสำเร็จ'); window.location.href='b.php';</script>";
-        } else {
-            echo "<script>alert('บันทึกข้อมูลสำเร็จ แต่ไม่สามารถย้ายไฟล์รูปภาพได้ (เช็ค Permission โฟลเดอร์ images)');</script>";
-        }
-    } else {
-        echo "Error: " . mysqli_error($conn);
-    }
+    $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}', '{$ext}', '{$rid}')";
+    mysqli_query($conn,$sql2) or die ("ไม่ได้");
+
+    //var_dump($sql2);exit;
+    $pid = mysqli_insert_id($conn);
+    //copy($_FILES['pimage']['tmp_name'],"img/".$pid.".".$ext);
+    move_uploaded_file($_FILES['pimage']['tmp_name'],"images/".$pid.".".$ext);
 }
 ?>
 
-<table border="1" width="700">
-    <tr bgcolor="#eee">
+<table border="1">
+    <tr>
         <th>รหัสจังหวัด</th>
         <th>ชื่อจังหวัด</th>
         <th>ชื่อภาค</th>
-        <th>รูป</th>
+        <th>รูปจังหวัด</th>
         <th>ลบ</th>
-    </tr>
-<?php 
-$sql = "SELECT * FROM `provinces` AS p INNER JOIN `regions` AS r ON p.r_id = r.r_id ORDER BY p.p_id DESC";
-$rs = mysqli_query($conn, $sql);
 
+    </tr>
+<?php
+include_once("conectdb.php");
+$sql = "SELECT * FROM `provinces`";
+$rs = mysqli_query($conn,$sql);
 while ($data = mysqli_fetch_array($rs)){
-    $img_name = "images/" . $data['p_id'] . "." . $data['p_ext'];
+    
+?>
+<?php
+    include_once("conectdb.php");
+    $sql = "SELECT * FROM `provinces` AS p INNER JOIN `regions` AS r ON p.r_id = r.r_id";
+    $rs = mysqli_query($conn,$sql);
+    while ($data = mysqli_fetch_array($rs)){
+
 ?>
     <tr>
-        <td align="center"><?php echo $data['p_id'];?></td>
-        <td><?php echo $data['p_name'];?></td>
-        <td><?php echo $data['r_name'];?></td>
-        <td align="center">
-            <?php if(file_exists($img_name)){ ?>
-                <img src="<?php echo $img_name; ?>" width="120">
-            <?php } else { echo "ไม่มีรูป"; } ?>
-        </td>
-        <td align="center">
-            <a href="delete_province.php?id=<?php echo $data['p_id'];?>&ext=<?php echo $data['p_ext'];?>" onClick="return confirm('ยืนยันการลบ?');">
-                <img src="images/delete.jpg" width="20">
-            </a>
-        </td>
+        <td><?php echo $data['p_id']; ?></td>
+        <td><?php echo $data['p_name']; ?></td>
+        <td><?php echo $data['r_name']; ?></td>
+        <td><img src="images/<?php echo $data['p_id']; ?>.<?php echo $data['p_ext']; ?>" width="80"></td>
+        <td width="80" align="center"><a href="delete_province.php?id=<?php echo $data['p_id']; ?>$ext=<?php echo $data['p_ext'];?>"onClick="return confirm('ยืนยันการลบ?');"><img src="images/delete.jpg" width="80"></a></td>
     </tr>
 <?php } ?>
 </table>
-
 </body>
 </html>
-<?php mysqli_close($conn); ?>
+<?php
+mysqli_close($conn);
+?>
+<?php } ?>
