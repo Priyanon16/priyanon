@@ -7,40 +7,45 @@
 
 <body>
 
-<h1>งาน i -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
-<form method="post" action="" enctype="multipart/from-data">
-    ชื่อจังหวัด <input type="text" name="pname" autofocus required>
-    รูปภาพ <input type="file" name="pimage" required> <br>
-    <button type="submit" name="Submit">บันทึก</button>
+<h1>จัดการข้อมูลจังหวัด -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
 
-    ภาค
+<form method="post" action="" enctype="multipart/form-data">
+    ชื่อจังหวัด: <input type="text" name="pname" autofocus required>
+    รูปภาพ: <input type="file" name="pimage" required> <br>
+    ภาค: 
     <select name="rid">
     <?php 
-include_once("connectdb.php");
-$sql3 = "SELECT * FROM `regions`";
-$rs3 = mysqli_query($conn, $sql3);
-while ($data3 = mysqli_fetch_array($rs3)){
-?>
-        <option value="<td><?php echo $data3['r_id'];?></td><?php echo $data3['r_name'];?></option>
-<?php } ?>
-
+    include_once("connectdb.php");
+    $sql3 = "SELECT * FROM `regions`";
+    $rs3 = mysqli_query($conn, $sql3);
+    while ($data3 = mysqli_fetch_array($rs3)){
+        echo "<option value='{$data3['r_id']}'>{$data3['r_name']}</option>";
+    } 
+    ?>
     </select>
-</form> <br> <br>
+    <button type="submit" name="Submit">บันทึก</button>
+</form> <br>
 
 <?php
 if(isset($_POST['Submit'])){
     include_once("connectdb.php");
     $pname = $_POST['pname'];
-    $ext = pathinfo($FILES['pimage']['name'], PATHINFO_EXTENSION);
     $rid = $_POST['rid'];
+    $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION); // ใช้ $_FILES
+    
     $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}','{$ext}','{$rid}')";
-    mysqli_query($conn, $sql2) or die ("เพิ่มข้อมูลไม่ได้");
-    $pid = mysqli_insert_id($conn);
-    copy($FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+    if(mysqli_query($conn, $sql2)){
+        $pid = mysqli_insert_id($conn);
+        copy($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+        echo "<script>window.location.href=window.location.href;</script>";
+    } else {
+        echo "เพิ่มข้อมูลไม่ได้: " . mysqli_error($conn);
+    }
 }
 ?>
-<table border="1">
-    <tr>
+
+<table border="1" width="600">
+    <tr bgcolor="#eee">
         <th>รหัสจังหวัด</th>
         <th>ชื่อจังหวัด</th>
         <th>ชื่อภาค</th>
@@ -49,22 +54,26 @@ if(isset($_POST['Submit'])){
     </tr>
 <?php 
 include_once("connectdb.php");
-$sql = "SELECT * FROM `provinces`AS p INNER JOIN `regions` AS r ON p.r_id=r.r_id";
-$rs = mysqli_query($conn, $sql);
+// แก้ไขตรง p.r_id = r.r_id เพื่อไม่ให้ SQL Error
+$sql = "SELECT * FROM `provinces` AS p INNER JOIN `regions` AS r ON p.r_id = r.r_id";
+$rs = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
 while ($data = mysqli_fetch_array($rs)){
 ?>
     <tr>
         <td><?php echo $data['p_id'];?></td>
         <td><?php echo $data['p_name'];?></td>
         <td><?php echo $data['r_name'];?></td>
-        <td><img src="images/<?php echo $data['p_id'];?>.<?php echo $data['p_ext'];?>" width="180"></td>
-        <td width="80" align="center"><a href="delete_provice.php?id=<?php echo $data['r_id'];?>&ext=<?php echo $data['p_ext'];?>" onClick="return confirm('ยืนยันการลบ?');"><img src="images/delete.jpg" width="20"></a></td>
+        <td><img src="images/<?php echo $data['p_id'].".".$data['p_ext'];?>" width="100"></td>
+        <td align="center">
+            <a href="delete_province.php?id=<?php echo $data['p_id'];?>&ext=<?php echo $data['p_ext'];?>" onClick="return confirm('ยืนยันการลบ?');">
+                <img src="images/delete.jpg" width="20">
+            </a>
+        </td>
     </tr>
 <?php } ?>
 </table>
+
 </body>
 </html>
-
-<?php
-mysqli_close($conn)
-?>
+<?php mysqli_close($conn); ?>
