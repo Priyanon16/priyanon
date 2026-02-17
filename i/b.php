@@ -9,7 +9,8 @@
 
 <h1>งาน i -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
 <form method="post" action="">
-    ชื่อภาค <input type="text" name="rname" autofocus required>
+    ชื่อจังหวัด <input type="text" name="pname" autofocus required>
+    รูป <input type="file" name="pimage">
     <button type="submit" name="Submit">บันทึก</button>
 </form> <br> <br>
 
