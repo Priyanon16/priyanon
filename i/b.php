@@ -9,39 +9,39 @@
 
 <h1>จัดการข้อมูลจังหวัด -- ปรียานนท์ กรุตนิด (มินนี่)</h1>
 
-<form method="post" action="" enctype="multipart/form-data"> ชื่อจังหวัด <input type="text" name="pname" autofocus required>
-    รูปภาพ <input type="file" name="pimage" required> <br>
-    
-    ภาค
+<form method="post" action="" enctype="multipart/form-data">
+    ชื่อจังหวัด: <input type="text" name="pname" autofocus required>
+    รูปภาพ: <input type="file" name="pimage" required> <br>
+    ภาค: 
     <select name="rid">
     <?php 
-        include_once("connectdb.php");
-        $sql3 = "SELECT * FROM `regions`";
-        $rs3 = mysqli_query($conn, $sql3);
-        while ($data3 = mysqli_fetch_array($rs3)){
-            echo "<option value='{$data3['r_id']}'>{$data3['r_name']}</option>";
-        } 
+    include_once("connectdb.php");
+    $sql3 = "SELECT * FROM `regions`";
+    $rs3 = mysqli_query($conn, $sql3);
+    while ($data3 = mysqli_fetch_array($rs3)){
     ?>
+        <option value='{$data3['r_id']}'>{$data3['r_name']}</option>";
+
+    <?php } ?>
     </select>
     <button type="submit" name="Submit">บันทึก</button>
-</form>
+</form> <br>
 
 <?php
 if(isset($_POST['Submit'])){
     include_once("connectdb.php");
     $pname = $_POST['pname'];
     $rid = $_POST['rid'];
-    
-    // เปลี่ยนจาก $FILES เป็น $_FILES ทั้งหมด
-    $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
+    $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION); // ใช้ $_FILES
     
     $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}','{$ext}','{$rid}')";
     if(mysqli_query($conn, $sql2)){
         $pid = mysqli_insert_id($conn);
-        // เปลี่ยนจาก $FILES เป็น $_FILES
-        copy($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
-        
-        echo "<script>alert('บันทึกสำเร็จ'); window.location.href=window.location.href;</script>";
+        //copy($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+        move_uploaded_file($_FILES['pimage']['tmp_name'], "images/".$pid.".".$ext);
+        echo "<script>window.location.href=window.location.href;</script>";
+    } else {
+        echo "เพิ่มข้อมูลไม่ได้: " . mysqli_error($conn);
     }
 }
 ?>
