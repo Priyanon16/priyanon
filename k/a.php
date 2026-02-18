@@ -13,7 +13,7 @@
 
 
 <button style="background-color:green; color:white;"
-        onclick="window.open('image1.jpg')">
+        onclick="window.open('images/1.jpg')">
     ปุ่มสีเขียว
 </button>
 
