@@ -14,12 +14,12 @@
 
 <button style="background-color:green; color:white;"
         onclick="window.open('1.jpg')">
-    ปุ่มสีเขียว
+    คลิกเลยจู้
 </button>
 
 <button style="background-color:orange; color:white;"
         onclick="window.open('2.jpg')">
-    ปุ่มสีส้ม
+    คลิกเลยจู้
 </button>
 
 				
