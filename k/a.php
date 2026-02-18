@@ -13,12 +13,12 @@
 
 
 <button style="background-color:green; color:white;"
-        onclick="window.open('images/1.jpg')">
+        onclick="window.open('1.jpg')">
     ปุ่มสีเขียว
 </button>
 
 <button style="background-color:orange; color:white;"
-        onclick="window.open('image2.jpg')">
+        onclick="window.open('2.jpg')">
     ปุ่มสีส้ม
 </button>
 
