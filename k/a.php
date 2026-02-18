@@ -11,9 +11,16 @@
 <h1>งาน k - 66010912608 ปรียานนท์ กรุตนิด (มินนี่)</h1>
 <br>
 
-<button type="button" onclick="window.open('images/1.jpg')">ปุ่มสีเขียว</button>
 
-<button onclick="window.open('image2.jpg')">ปุ่มสีส้ม</button>
+<button style="background-color:green; color:white;"
+        onclick="window.open('image1.jpg')">
+    ปุ่มสีเขียว
+</button>
+
+<button style="background-color:orange; color:white;"
+        onclick="window.open('image2.jpg')">
+    ปุ่มสีส้ม
+</button>
 
 				
           
