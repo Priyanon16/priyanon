@@ -10,10 +10,7 @@
 
 <h1>งาน j - 66010912608 ปรียานนท์ กรุตนิด (มินนี่)</h1>
 <br>
-
-<div class="col-2">
-      <img src="1.jpg" class="img-fluid">
-</div>
+<img src="1.jpg" width="400">
 
 				
           
